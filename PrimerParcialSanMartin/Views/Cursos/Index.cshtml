@@ -1,0 +1,74 @@
+﻿@using PrimerParcialSanMartin.Models;
+@model List<Curso>;
+
+
+@functions{
+    string MostrarFotoCurso(string fotoruta)
+    {
+        if (String.IsNullOrEmpty(fotoruta))
+        {
+            <img src='@Url.Content("~/imagenes/no-disponible.jpg"  )' class="rounded-circle" style="width: 55px;height:55px" />
+
+        }
+        else
+        {
+            <img src='@Url.Content("~/imagenes/" + fotoruta )' class="rounded-circle" style="width: 55px;height:55px" />
+        }
+
+        return string.Empty;
+    }
+}
+
+@await Html.PartialAsync("_CantCursos", Model)
+
+
+@if (Model.Count() > 0)
+{
+    <div class="text-center">
+        <h1>Listado de Cursos</h1>
+        <h3>@Html.ActionLink("Crear nuevo", "Crear")</h3>
+        @using (Html.BeginForm())
+        {
+            <p class="text-left">
+                Buscar por Curso o Profesor a Cargo: @Html.TextBox("busquedaNombre")
+                <input type="submit" value="Buscar" class="btn-default" />
+            </p>
+        }
+
+        <table class="table">
+            <tr>
+                <th></th>
+                <th>@Html.ActionLink("Codigo de curso", "Index", new { CampoOrden = "curso" })</th>
+                <th>@Html.ActionLink("Curso", "Index", new { CampoOrden = "nombre_curso" })</th>
+                <th>@Html.ActionLink("Duracion en Hs", "Index", new { CampoOrden = "duracion" })</th>
+                <th>@Html.ActionLink("Docente", "Index", new { CampoOrden = "profesor" })</th>
+                <th>Tipo de Cursada</th>
+            </tr>
+
+            @foreach (var cur in Model)
+            {
+                <tr>
+                    <td>
+                        @MostrarFotoCurso(cur.FotoRuta.ToString())
+                    </td>
+                    <td>@cur.CodigoCurso</td>
+                    <td>@cur.Nombre</td>
+                    <td>@cur.Duracion</td>
+                    <td>@cur.ProfesorACargo</td>
+                    <td>@cur.TipoCursada.Nombre<td>
+                        @Html.ActionLink("Modificar Curso", "Editar", new { codigo = cur.CodigoCurso })
+                    </td>
+                    <td>
+                        @Html.ActionLink("Eliminar Curso", "Eliminar", new { codigo = cur.CodigoCurso })
+                    </td>
+                    <td>
+                        @Html.ActionLink("Ver", "Ver", new { codigo = cur.CodigoCurso })
+                    </td>
+                </tr>
+            }
+        </table>
+    </div> }
+else
+{
+    <h2>No hay cursos disponibles en este momento.</h2>
+}

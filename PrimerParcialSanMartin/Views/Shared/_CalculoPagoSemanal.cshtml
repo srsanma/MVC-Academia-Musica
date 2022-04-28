@@ -1,0 +1,32 @@
+@model Curso
+
+@functions{
+        string CalcularPagoXSemana(TipoCursada tipo, int? duracion, string profesor){
+        
+        int valorXHora = 0;
+        switch(tipo.Nombre) {
+            case "Presencial": 
+                    valorXHora = 150;
+                break;
+            case "Virtual": 
+                    valorXHora = 80;
+                break;    
+            case "Bimodal":
+                    valorXHora = 100;
+                break;            
+        }
+        
+        double pagoSemanal = duracion.GetValueOrDefault() * valorXHora;
+
+        <div class="alert alert-primary" role="alert">
+                <h4 class="alert-heading">Sueldo por clase y tipo de cursada</h4>
+                <p>El sueldo semanal de @profesor es $@pagoSemanal. </p>
+        </div>
+        return string.Empty;
+    }
+}
+<div class="form-row">
+    <div class="col-6">
+        @CalcularPagoXSemana(Model.TipoCursada, Model.Duracion, Model.ProfesorACargo)
+    </div>    
+</div>

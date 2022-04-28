@@ -1,0 +1,80 @@
+﻿@model Curso
+
+@functions{
+    string MostrarFotoCurso(string fotoruta)
+    {
+        if (String.IsNullOrEmpty(fotoruta))
+        {
+            <img src='@Url.Content("~/imagenes/no-disponible.jpg"  )' class="rounded-circle" style="width: 55px;height:55px" />
+
+        }
+        else
+        {
+            <img src='@Url.Content("~/imagenes/" + fotoruta )' class="rounded-circle" style="width: 55px;height:55px" />
+        }
+
+        return string.Empty;
+    }
+}
+
+
+<h1>@ViewBag.Titulo</h1>
+<h3>@ViewBag.Mensaje</h3>
+@using (Html.BeginForm(null, null, FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+<div class="form-group">
+    @Html.LabelFor(a => a.CodigoCurso)
+    @Html.TextBoxFor(a => a.CodigoCurso, new { @class = "form-control", @readonly = "readonly" })
+</div>
+<div class="form-group">
+    @Html.LabelFor(a => a.Nombre)
+    @Html.TextBoxFor(a => a.Nombre, new { @class = "form-control" })
+    @Html.ValidationMessageFor(a => a.Nombre, "", new { @class = "text-danger" })
+</div>
+<div class="form-group">
+    @Html.LabelFor(a => a.Duracion)
+    @Html.TextBoxFor(a => a.Duracion, new { @class = "form-control" })
+    @Html.ValidationMessageFor(a => a.Duracion, "", new { @class = "text-danger" })
+</div>
+<div class="form-group">
+    @Html.LabelFor(a => a.ProfesorACargo)
+    @Html.TextBoxFor(a => a.ProfesorACargo, new { @class = "form-control" })
+    @Html.ValidationMessageFor(a => a.ProfesorACargo, "", new { @class = "text-danger" })
+</div>
+<div>
+    @Html.DropDownListFor(x => x.TipoCursadaCodigo, ViewBag.TipoCursada as SelectList, "--Seleccionar Cursada--", new { @class = "form-control" })
+</div>
+<div class="form-group">
+    @Html.LabelFor(x => x.Foto)
+    <div class="custom-file">
+        @Html.TextBoxFor(x => x.Foto, new { type = "file", @class = "form-control custom-file-input" })
+        @Html.LabelFor(x => x.Foto, "Seleccionar foto", new { @class = "custom-file-label" })
+        @Html.HiddenFor(x => x.FotoRuta, new { @class = "form-control" })
+        @MostrarFotoCurso(Model.FotoRuta)
+    </div>
+</div>
+    @*<div class="form-row">
+            <div class="col-6">
+                @Html.HiddenFor(x => x.FotoRuta, new { @class = "form-control" })
+                @MostrarFotoCurso(Model.FotoRuta)
+            </div>
+            <div class="col-6">
+                <div class="custom-file">
+                    @Html.TextBoxFor(x => x.Foto, new { type = "file", @class = "form-control custom-file-input" })
+                    @Html.LabelFor(x => x.Foto, "Seleccionar foto", new { @class = "custom-file-label" })
+                </div>
+            </div>
+        </div>*@
+<input type="submit" class="btn btn-primary" value="Guardar" />
+@Html.ActionLink("Cancelar", "Index", null, null, new { @class = "btn btn-default" })
+
+@section scripts {
+        <script>
+            $('.custom-file-input').on('change', function () {
+                var nombrearchivo = $(this).val().split("\\").pop();
+                $(this).next('.custom-file-label').html(nombrearchivo);
+            });                                                                                                                                                                                                                                                                                                                                                           //$('#Codigo')
+        </script>
+}
+
+}

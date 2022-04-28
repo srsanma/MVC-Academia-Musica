@@ -1,0 +1,90 @@
+﻿@model Curso
+
+@functions{
+    string MostrarFotoCurso(string fotoruta)
+    {
+        if (String.IsNullOrEmpty(fotoruta))
+        {
+            <img src='@Url.Content("~/imagenes/no-disponible.jpg"  )' class="rounded-circle" style="width: 55px;height:55px" />
+
+        }
+        else
+        {
+            <img src='@Url.Content("~/imagenes/" + fotoruta )'  style="width: 100px;height:100px" />
+        }
+
+        return string.Empty;
+    }
+@*     string CalcularPagoXSemana(TipoCursada tipo, int? duracion, string profesor){
+        
+        int valorXHora = 0;
+        switch(tipo.Nombre) {
+            case "Presencial": 
+                    valorXHora = 150;
+                break;
+            case "Virtual": 
+                    valorXHora = 80;
+                break;    
+            case "Bimodal":
+                    valorXHora = 100;
+                break;            
+        }
+        
+        double pagoSemanal = duracion.GetValueOrDefault() * valorXHora;
+
+        <p>El sueldo semanal de @profesor es @pagoSemanal </p>
+        return string.Empty;
+    } *@
+}
+
+
+<h1>@ViewBag.Titulo</h1>
+@using (Html.BeginForm())
+{
+    <div class="form-group">
+        @Html.LabelFor(a => a.CodigoCurso)
+        @Html.TextBoxFor(a => a.CodigoCurso, new { @class = "form-control", @readonly = "readonly" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(a => a.Nombre)
+        @Html.TextBoxFor(a => a.Nombre, new { @class = "form-control", @readonly = "readonly" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(a => a.Duracion)
+        @Html.TextBoxFor(a => a.Duracion, new { @class = "form-control", @readonly = "readonly" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(a => a.ProfesorACargo)
+        @Html.TextBoxFor(a => a.ProfesorACargo, new { @class = "form-control", @readonly = "readonly" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(a => a.TipoCursada.Nombre)
+        @Html.TextBoxFor(a => a.TipoCursada.Nombre, new { @class = "form-control", @readonly = "readonly" })
+    </div>
+    <div class="form-row">
+        <div class="col-6">
+            @Html.HiddenFor(x => x.FotoRuta)
+            @MostrarFotoCurso(Model.FotoRuta)
+        </div>
+    </div>
+    <div class="form-group">
+        @await Html.PartialAsync("_CalculoPagoSemanal", Model)
+    </div>
+    
+    @Html.ActionLink("Volver", "Index", null, null, new { @class = "btn btn-default" })
+
+    @section scripts {
+        <script>
+            //jquery
+            //class
+            $('.custom-file-input').on('change', function () {
+                var nombrearchivo = $(this).val().split("\\").pop();
+                $(this).next('.custom-file-label').html(nombrearchivo);
+            });
+
+                                                                                                                                                                                                                                                                                                                                                                                            //id
+                                                                                                                                                                                                                                                                                                                                                                                            //$('#Codigo')
+        </script>
+    }
+
+}
